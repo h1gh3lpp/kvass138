@@ -127,8 +127,21 @@
     const input = document.getElementById('searchInput');
     const result = document.getElementById('resultBox');
 
-    // Счетчик повторных вводов для каждого кода
+    // Счетчик повторных вводов
     const entryCounts = {};
+
+    // Функция автозамены расширений, если картинка не наводится
+    function imgError(img) {
+        if (img.src.endsWith('.jpg')) {
+            img.src = img.src.replace('.jpg', '.png');
+        } else if (img.src.endsWith('.png')) {
+            img.src = img.src.replace('.png', '.jpeg');
+        } else if (img.src.endsWith('.jpeg')) {
+            img.src = img.src.replace('.jpeg', '.JPG');
+        } else {
+            img.onerror = null;
+        }
+    }
 
     // Авто-фокус при печати
     document.addEventListener('keydown', function(e) {
@@ -137,7 +150,7 @@
         }
     });
 
-    // Обработка нажатия Enter
+    // Обработка Enter
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -147,7 +160,6 @@
 
             if (!query) return;
 
-            // Увеличиваем счетчик шагов
             entryCounts[query] = (entryCounts[query] || 0) + 1;
             const step = entryCounts[query];
 
@@ -155,7 +167,6 @@
 
             if (query === 'michael' || query === 'майкл') {
                 if (step < 6) {
-                    // Ввод от 1 до 5 раз — Фраза 1
                     result.innerHTML = `
                         <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
                         Он кричал, требовал ответов и угрожал вызвать полицию.<br><br>
@@ -163,23 +174,20 @@
                         <span class="red-alert">Теперь у меня нет друзей.</span>
                     `;
                 } else if (step === 6) {
-                    // Ровно 6-й ввод подряд — Фраза 2 + Старое фото
                     result.innerHTML = `
                         <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
                         мы же раньше нормально общались. <br>
-                        <img src="friends.jpg" class="arg-img" alt="старое фото">
+                        <img src="friends.jpg" onerror="imgError(this)" class="arg-img" alt="старое фото">
                     `;
                 } else {
-                    // 7-й и все последующие вводы — Фраза 3 + Место преступления
                     result.innerHTML = `
                         <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
                         ОН ЖУТКО ПАХНЕТ НЕНАВИЖУ ТО ЧТО ОН СУЕТ СВОЙ ДРАННЫЙ НОС КУДА НЕ НАДО ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ<br>
-                        <img src="crime.jpg" class="arg-img" alt="коридор">
+                        <img src="crime.jpg" onerror="imgError(this)" class="arg-img" alt="коридор">
                     `;
                 }
             } else if (query === 'kvass' || query === 'квасс') {
                 if (step < 6) {
-                    // Ввод от 1 до 5 раз — Фраза 1
                     result.innerHTML = `
                         <span class="red-alert">[НЯШ]</span><br><br>
                         наконец нашла мод в который мы с ней сможем сыграть. .<br><br>
@@ -187,18 +195,16 @@
                         <em>Она все еще в той комнате.</em>
                     `;
                 } else if (step === 6) {
-                    // Ровно 6-й ввод — Фраза 2 + Фото свинки
                     result.innerHTML = `
                         <span class="red-alert">[...]</span><br><br>
                         она всегда помогала в трудных ситуациях.<br>
-                        <img src="gift.jpg" class="arg-img" alt="подарок">
+                        <img src="gift.jpg" onerror="imgError(this)" class="arg-img" alt="подарок">
                     `;
                 } else {
-                    // 7-й и последующие вводы — Фраза 3 + Фото свинки
                     result.innerHTML = `
                         <span class="red-alert">[...]</span><br><br>
                         "перестань ворошить прошлое.живи настоящим. это же не конец" <br>
-                        <img src="gift.jpg" class="arg-img" alt="подарок">
+                        <img src="gift.jpg" onerror="imgError(this)" class="arg-img" alt="подарок">
                     `;
                 }
             } else if (query === '2606' || query === '26.06' || query === '26062026') {
@@ -231,7 +237,7 @@
                     <span class="red-alert">[ ЕЕ ПОДАРОК ]</span><br><br>
                     годный подарок на др! <br>
                     спс <br>
-                    <img src="gift.jpg" class="arg-img" alt="подарок">
+                    <img src="gift.jpg" onerror="imgError(this)" class="arg-img" alt="подарок">
                 `;
             } else {
                 result.innerHTML = `<span style="color: #666666;">Запись по запросу "${query}" не найдена или была уничтожена.</span>`;
