@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTEM_FAILURE // CASE_FILE_0814</title>
+    <title>highpal // personal_space</title>
     <style>
         :root {
-            --bg-color: #080808;
-            --text-color: #a0a0a0;
-            --accent-color: #ff3333;
-            --dim-color: #444;
+            --bg-color: #050505;
+            --text-color: #c0c0c0;
+            --accent-color: #ff2222;
+            --dim-color: #333;
         }
 
         body {
@@ -26,61 +26,65 @@
             overflow-x: hidden;
         }
 
-        /* Эффект ЭЛТ-монитора */
+        /* Эффект мерцающего старого монитора */
         body::before {
             content: " ";
             display: block;
             position: fixed;
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
             z-index: 10;
-            background-size: 100% 2px, 3px 100%;
+            background-size: 100% 3px, 6px 100%;
             pointer-events: none;
         }
 
-        .terminal {
+        .container {
             width: 100%;
-            max-width: 750px;
-            border: 1px solid var(--dim-color);
+            max-width: 700px;
+            border: 1px solid #222;
             padding: 25px;
-            background: #0d0d0d;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.1);
+            background: #0a0a0a;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
             position: relative;
         }
 
-        h1 {
-            color: var(--accent-color);
-            font-size: 1.2rem;
-            border-bottom: 1px dashed var(--dim-color);
-            padding-bottom: 10px;
-            margin-top: 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .header {
+            border-bottom: 1px solid var(--dim-color);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #666;
         }
 
-        p, .log-entry {
+        .header span {
+            color: var(--accent-color);
+        }
+
+        .entry {
+            margin-bottom: 20px;
             font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 15px;
+            line-height: 1.6;
         }
 
-        .corrupted {
+        .glitch-text {
             color: var(--accent-color);
-            background-color: #220000;
-            padding: 0 4px;
+            background: #1a0000;
+            padding: 2px 5px;
         }
 
-        .input-line {
-            display: flex;
-            margin-top: 25px;
-            border-top: 1px solid var(--dim-color);
+        .input-box {
+            margin-top: 30px;
+            border-top: 1px dashed var(--dim-color);
             padding-top: 15px;
+            display: flex;
+            align-items: center;
         }
 
         .prompt {
             color: var(--accent-color);
             margin-right: 10px;
+            font-weight: bold;
         }
 
         input[type="text"] {
@@ -93,99 +97,105 @@
             outline: none;
         }
 
-        .hidden-content {
+        .output-area {
             display: none;
             margin-top: 20px;
             padding: 15px;
             border: 1px solid var(--accent-color);
-            background: #150000;
-            color: #ffaaaa;
+            background: #110000;
+            color: #ffcccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
-        .footer {
-            margin-top: 30px;
-            font-size: 0.75rem;
-            color: var(--dim-color);
-            text-align: right;
+        .chat-log {
+            background: #000;
+            padding: 10px;
+            border-left: 2px solid var(--accent-color);
+            margin-top: 10px;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 
-<div class="terminal">
-    <h1>[ SYSTEM DATABASE // RESTRICTED ACCESS ]</h1>
-    
-    <p>> Статус сервера: <span style="color: #00ff00;">ONLINE</span></p>
-    <p>> Активных сессий: 1</p>
-    <p>> Последняя синхронизация: 14 АВГУСТА (ОШИБКА ДАННЫХ)</p>
-    
-    <hr style="border: 0; border-top: 1px dashed var(--dim-color);">
-
-    <div class="log-entry">
-        <strong>ЗАПИСЬ #01:</strong> Я не знаю, почему лог до сих пор пишет. Компьютер выключается, но кулеры гудят. Он все еще стоял там. На спавне. Я пробовала удалить его файл из папки <code>/world/playerdata</code>, но сервер восстанавливает его каждые 3 минуты.
+<div class="container">
+    <div class="header">
+        USER: <span>highpal</span> | NOTES_LOG | DO_NOT_OPEN
     </div>
 
-    <div class="log-entry">
-        <strong>ЗАПИСЬ #02:</strong> Майкл говорит, что я сумасшедшая. Он ничего не понимает. Он не был там. Он не слышал, как звук прервался. Если вы нашли этот адрес — не верьте ему. <span class="corrupted">Я НЕ ХОТЕЛА</span>
+    <div class="entry">
+        Зачем я это пишу? Наверное, чтобы не забыть пароли. В голове всё путается. 
+        В квартире опять этот странный запах из дальней комнаты, но я просто плотно закрыла дверь и включила вентилятор. Всё нормально.
     </div>
 
-    <div id="secret-output" class="hidden-content">
-        <!-- Раскрываемый контент -->
+    <div class="entry">
+        Мы просто играем в Майнкрафт. Как раньше. Ничего не произошло. 
+        Завтра надо записать новую серию, нужно только сделать звук погромче, чтобы не слышать, как что-то шуршит в коридоре.
     </div>
 
-    <div class="input-line">
-        <span class="prompt">ENTER_CODE_></span>
-        <input type="text" id="commandInput" placeholder="Введите команду или пароль..." autofocus>
-    </div>
+    <div id="output" class="output-area"></div>
 
-    <div class="footer">
-        INSIDE_THE_SYSTEM_ARCHIVE v0.8.14
+    <div class="input-box">
+        <span class="prompt">search_></span>
+        <input type="text" id="userInput" placeholder="введи слово или дату..." autofocus>
     </div>
 </div>
 
 <script>
-    const input = document.getElementById('commandInput');
-    const output = document.getElementById('secret-output');
+    const input = document.getElementById('userInput');
+    const output = document.getElementById('output');
 
     input.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             const val = input.value.trim().toLowerCase();
             input.value = '';
 
-            if (val === '1408' || val === '14.08') {
+            if (val === '2606' || val === '26.06' || val === '26062026') {
                 output.style.display = 'block';
                 output.innerHTML = `
-                    <strong>[ДОСТУП РАЗРЕШЕН: ДЕЛО №0814]</strong><br><br>
-                    <strong>Выдержка из протокола допроса:</strong><br>
-                    "...субъект утверждал, что вещество было принято добровольно. Однако экспертиза показала наличие сторонних примесей. Скорая помощь была вызвана спустя 3 часа 40 минут после наступления критического состояния."<br><br>
-                    <em>Файл с записью: <a href="#" style="color: #fff;">audio_recording_room.mp3</a> (ПОВРЕЖДЕН)</em>
+                    <strong>[ЗАПИСЬ ОТ 26.06.2026]</strong><br><br>
+                    Нам было весело. Я просто хотела, чтобы он расслабился. Я дала ему попробовать, а он начал паниковать. Это была просто дрянь для тусовки, почему ему стало так плохо?!<br><br>
+                    <em>Слитый фрагмент переписки Квасса и Майкла (26.06 02:41):</em>
+                    <div class="chat-log">
+                        <strong>Квасс:</strong> Майкл блядь мне пиздец плохо highpal чтото подсыпала или дала я не могу дышать<br>
+                        <strong>Квасс:</strong> она смеется говорит что я придумываю я боюсь ей сказать что мне хреново<br>
+                        <strong>Майкл:</strong> Ты где?! Вызывай скорую сука!<br>
+                        <strong>Квасс:</strong> я не чувствую рук
+                    </div><br>
+                    <span class="glitch-text">Я не вызвала скорую. Я испугалась. Теперь он лежит в той комнате и больше не жалуется.</span>
                 `;
             } else if (val === 'kvass' || val === 'квасс') {
                 output.style.display = 'block';
                 output.innerHTML = `
-                    <strong>[ОШИБКА ОБЪЕКТА]</strong><br><br>
-                    Пользователь <code>KVASS</code> не найден в сети.<br>
-                    Последние координаты в мире: X: -140, Y: 12, Z: 814.<br>
-                    Сообщение в кэше: <em>"Почему ты не открыла дверь?"</em>
+                    <strong>[KVASS_BOT_LOGS]</strong><br><br>
+                    Я перенесла его скин в Майнкрафт. Если он будет в игре, значит, его нет в той квартире. Он просто стоит на спавне и смотрит на меня.<br><br>
+                    Почему он не отвечает в чате? Я же знаю, что он там. Я слышу, как его персонаж передвигается, когда я поворачиваюсь спиной.<br>
+                    <span class="glitch-text">Он не разлагается в игре. В игре он живой.</span>
                 `;
             } else if (val === 'michael' || val === 'майкл') {
                 output.style.display = 'block';
                 output.innerHTML = `
-                    <strong>[СТАТУС КОНТАКТА]</strong><br><br>
-                    Пользователь <code>Michael_2026</code> заблокировал вас.<br>
-                    Последнее личное сообщение: <em>"Я всё расскажу его маме, если ты не пойдешь в полицию сама."</em>
+                    <strong>[DISCORD_HISTORY // Michael_2026]</strong><br><br>
+                    <em>Архив чата перед 3-й серией:</em>
+                    <div class="chat-log">
+                        <strong>Майкл:</strong> highpal, где Квасс? Его мама звонит мне уже третий день, он не дома.<br>
+                        <strong>highpal:</strong> Да забей ты! Он занят. Заходи лучше на сервер, я крутой хоррор-мод сгенерила, запишем 3 серию!<br>
+                        <strong>Майкл:</strong> Ты какая-то странная. Что произошло на той неделе?
+                    </div><br>
+                    <em>Статус после 3-й серии:</em> <span style="color:red;">ПОЛЬЗОВАТЕЛЬ ЗАБЛОКИРОВАН.</span><br>
+                    Он слишком много спрашивал. Он хотел разрушить всё.
                 `;
-            } else if (val === 'help' || val === 'помощь') {
+            } else if (val === 'highpal') {
                 output.style.display = 'block';
                 output.innerHTML = `
-                    Доступные команды:<br>
-                    - Ввод ключевых имен (вкл. ники)<br>
-                    - Ввод дат (формат ЧЧММ)<br>
-                    - [ИЩИТЕ ПАРОЛИ В СУБТИТРАХ К ВИДЕО]
+                    <strong>[СЕБЕ]</strong><br><br>
+                    Ты не виновата. Это был несчастный случай. Никто не найдет его, если ты сама не откроешь ту дверь.<br>
+                    Просто играй. Включай микрофон, улыбайся на запись и делай вид, что всё хорошо. У тебя есть еще 3 дня.
                 `;
             } else {
                 output.style.display = 'block';
-                output.innerHTML = `<span style="color: red;">[ОШИБКА: ОТКАЗАНО В ДОСТУПЕ. КОМАНДА НЕ РАСПОЗНАНА]</span>`;
+                output.innerHTML = `<span style="color: #666;">ничего не найдено по запросу "${val}"...</span>`;
             }
         }
     });
