@@ -93,18 +93,13 @@
             font-weight: bold;
         }
 
-        .arg-img-link {
-            display: inline-block;
-            margin-top: 12px;
-            max-width: 100%;
-        }
-
         .arg-img {
             max-width: 100%;
             height: auto;
             border: 1px solid #000000;
+            margin-top: 12px;
             display: block;
-            cursor: pointer;
+            cursor: pointer; /* Указывает, что на картинку можно нажать */
         }
     </style>
 </head>
@@ -136,22 +131,25 @@
     // Счетчик повторных вводов
     const entryCounts = {};
 
-    // Функция автозамены расширений с обновлением ссылки
+    // Функция автоподбора формата для изображений
     function imgError(img) {
-        let newSrc = img.src;
-        if (img.src.endsWith('.jpg')) {
-            newSrc = img.src.replace('.jpg', '.png');
-        } else if (img.src.endsWith('.png')) {
-            newSrc = img.src.replace('.png', '.jpeg');
-        } else if (img.src.endsWith('.jpeg')) {
-            newSrc = img.src.replace('.jpeg', '.JPG');
+        const formats = ['.jpg', '.png', '.jpeg', '.JPG', '.PNG', '.JPEG'];
+        let currentStep = parseInt(img.dataset.extStep || '0');
+        
+        if (currentStep < formats.length - 1) {
+            currentStep++;
+            img.dataset.extStep = currentStep;
+            const baseName = img.src.substring(0, img.src.lastIndexOf('.'));
+            img.src = baseName + formats[currentStep];
         } else {
-            img.onerror = null;
-            return;
+            img.onerror = null; // Перебрали все форматы
         }
-        img.src = newSrc;
-        if (img.parentElement && img.parentElement.tagName === 'A') {
-            img.parentElement.href = newSrc;
+    }
+
+    // Открытие рабочей картинки в новой вкладке при клике
+    function openImageInNewTab(img) {
+        if (img.src && img.naturalWidth !== 0) {
+            window.open(img.src, '_blank');
         }
     }
 
@@ -189,17 +187,13 @@
                     result.innerHTML = `
                         <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
                         мы же раньше нормально общались. <br>
-                        <a href="friends.jpg" target="_blank" rel="noopener noreferrer" class="arg-img-link">
-                            <img src="friends.jpg" onerror="imgError(this)" class="arg-img" alt="старое фото">
-                        </a>
+                        <img src="friends.jpg" onerror="imgError(this)" onclick="openImageInNewTab(this)" class="arg-img" alt="старое фото" title="Нажмите, чтобы открыть в новой вкладке">
                     `;
                 } else {
                     result.innerHTML = `
                         <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
                         ОН ЖУТКО ПАХНЕТ НЕНАВИЖУ ТО ЧТО ОН СУЕТ СВОЙ ДРАННЫЙ НОС КУДА НЕ НАДО ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ<br>
-                        <a href="crime.jpg" target="_blank" rel="noopener noreferrer" class="arg-img-link">
-                            <img src="crime.jpg" onerror="imgError(this)" class="arg-img" alt="коридор">
-                        </a>
+                        <img src="crime.jpg" onerror="imgError(this)" onclick="openImageInNewTab(this)" class="arg-img" alt="коридор" title="Нажмите, чтобы открыть в новой вкладке">
                     `;
                 }
             } else if (query === 'kvass' || query === 'квасс') {
@@ -214,17 +208,13 @@
                     result.innerHTML = `
                         <span class="red-alert">[...]</span><br><br>
                         она всегда помогала в трудных ситуациях.<br>
-                        <a href="gift.jpg" target="_blank" rel="noopener noreferrer" class="arg-img-link">
-                            <img src="gift.jpg" onerror="imgError(this)" class="arg-img" alt="подарок">
-                        </a>
+                        <img src="gift.jpg" onerror="imgError(this)" onclick="openImageInNewTab(this)" class="arg-img" alt="подарок" title="Нажмите, чтобы открыть в новой вкладке">
                     `;
                 } else {
                     result.innerHTML = `
                         <span class="red-alert">[...]</span><br><br>
                         "перестань ворошить прошлое.живи настоящим. это же не конец" <br>
-                        <a href="gift.jpg" target="_blank" rel="noopener noreferrer" class="arg-img-link">
-                            <img src="gift.jpg" onerror="imgError(this)" class="arg-img" alt="подарок">
-                        </a>
+                        <img src="gift.jpg" onerror="imgError(this)" onclick="openImageInNewTab(this)" class="arg-img" alt="подарок" title="Нажмите, чтобы открыть в новой вкладке">
                     `;
                 }
             } else if (query === '2606' || query === '26.06' || query === '26062026') {
@@ -257,9 +247,7 @@
                     <span class="red-alert">[ ЕЕ ПОДАРОК ]</span><br><br>
                     годный подарок на др! <br>
                     спс <br>
-                    <a href="gift.jpg" target="_blank" rel="noopener noreferrer" class="arg-img-link">
-                        <img src="gift.jpg" onerror="imgError(this)" class="arg-img" alt="подарок">
-                    </a>
+                    <img src="gift.jpg" onerror="imgError(this)" onclick="openImageInNewTab(this)" class="arg-img" alt="подарок" title="Нажмите, чтобы открыть в новой вкладке">
                 `;
             } else {
                 result.innerHTML = `<span style="color: #666666;">Запись по запросу "${query}" не найдена или была уничтожена.</span>`;
