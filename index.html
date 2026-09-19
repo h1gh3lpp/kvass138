@@ -130,31 +130,32 @@
     // Счетчик повторных вводов для каждого кода
     const entryCounts = {};
 
-    // Авто-фокус при печати любой буквы
+    // Авто-фокус при печати
     document.addEventListener('keydown', function(e) {
         if (document.activeElement !== input && e.key.length === 1) {
             input.focus();
         }
     });
 
-    // Обработчик нажатия Enter (через keydown)
+    // Обработка нажатия Enter
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
-            e.preventDefault(); // Предотвращаем любые сбои при нажатии Enter
+            e.preventDefault();
 
             const query = input.value.trim().toLowerCase();
             input.value = '';
 
             if (!query) return;
 
-            // Увеличиваем счетчик шага для введенного слова
+            // Увеличиваем счетчик шагов
             entryCounts[query] = (entryCounts[query] || 0) + 1;
             const step = entryCounts[query];
 
             result.style.display = 'block';
 
             if (query === 'michael' || query === 'майкл') {
-                if (step === 1) {
+                if (step < 6) {
+                    // Ввод от 1 до 5 раз — Фраза 1
                     result.innerHTML = `
                         <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
                         Он кричал, требовал ответов и угрожал вызвать полицию.<br><br>
@@ -162,20 +163,23 @@
                         <span class="red-alert">Теперь у меня нет друзей.</span>
                     `;
                 } else if (step === 6) {
+                    // Ровно 6-й ввод подряд — Фраза 2 + Старое фото
                     result.innerHTML = `
-                        <span class="red-alert">[ ПРИДУРОК]</span><br><br>
+                        <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
                         мы же раньше нормально общались. <br>
                         <img src="friends.jpg" class="arg-img" alt="старое фото">
                     `;
                 } else {
+                    // 7-й и все последующие вводы — Фраза 3 + Место преступления
                     result.innerHTML = `
-                        <span class="red-alert">[ ПРИДУРОК  ]</span><br><br>
+                        <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
                         ОН ЖУТКО ПАХНЕТ НЕНАВИЖУ ТО ЧТО ОН СУЕТ СВОЙ ДРАННЫЙ НОС КУДА НЕ НАДО ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ<br>
                         <img src="crime.jpg" class="arg-img" alt="коридор">
                     `;
                 }
             } else if (query === 'kvass' || query === 'квасс') {
-                if (step === 1) {
+                if (step < 6) {
+                    // Ввод от 1 до 5 раз — Фраза 1
                     result.innerHTML = `
                         <span class="red-alert">[НЯШ]</span><br><br>
                         наконец нашла мод в который мы с ней сможем сыграть. .<br><br>
@@ -183,12 +187,14 @@
                         <em>Она все еще в той комнате.</em>
                     `;
                 } else if (step === 6) {
+                    // Ровно 6-й ввод — Фраза 2 + Фото свинки
                     result.innerHTML = `
                         <span class="red-alert">[...]</span><br><br>
                         она всегда помогала в трудных ситуациях.<br>
                         <img src="gift.jpg" class="arg-img" alt="подарок">
                     `;
                 } else {
+                    // 7-й и последующие вводы — Фраза 3 + Фото свинки
                     result.innerHTML = `
                         <span class="red-alert">[...]</span><br><br>
                         "перестань ворошить прошлое.живи настоящим. это же не конец" <br>
@@ -210,7 +216,7 @@
                     `;
                 } else {
                     result.innerHTML = `
-                        <span class="red-alert">[26.06.2026 ]</span><br><br>
+                        <span class="red-alert">[26.06.2026]</span><br><br>
                         0-0 <br>
                     `;
                 }
