@@ -130,17 +130,22 @@
     // Счетчик повторных вводов для каждого кода
     const entryCounts = {};
 
-    // Авто-фокус при печати
+    // Авто-фокус при печати любой буквы
     document.addEventListener('keydown', function(e) {
         if (document.activeElement !== input && e.key.length === 1) {
             input.focus();
         }
     });
 
-    input.addEventListener('keypress', function(e) {
+    // Обработчик нажатия Enter (через keydown)
+    input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
+            e.preventDefault(); // Предотвращаем любые сбои при нажатии Enter
+
             const query = input.value.trim().toLowerCase();
             input.value = '';
+
+            if (!query) return;
 
             // Увеличиваем счетчик шага для введенного слова
             entryCounts[query] = (entryCounts[query] || 0) + 1;
