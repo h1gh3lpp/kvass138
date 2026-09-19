@@ -3,199 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>highpal // personal_space</title>
+    <title>highpal // notes</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&display=swap');
+
         :root {
-            --bg-color: #050505;
-            --text-color: #c0c0c0;
-            --accent-color: #ff2222;
-            --dim-color: #333;
+            --bg-main: #070709;
+            --bg-card: #0e0e13;
+            --border-color: #1a1a24;
+            --text-main: #d1d1e0;
+            --text-muted: #525266;
+            --accent-red: #ff2a4b;
+            --accent-glow: rgba(255, 42, 75, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            padding: 20px;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Fira Code', monospace;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
+            padding: 20px;
             overflow-x: hidden;
         }
 
-        /* Эффект мерцающего старого монитора */
-        body::before {
-            content: " ";
-            display: block;
+        /* Фоновый шумок и мягкая виньетка */
+        body::after {
+            content: "";
             position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 10;
-            background-size: 100% 3px, 6px 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 40%, #000000 100%);
             pointer-events: none;
+            z-index: 1;
         }
 
-        .container {
+        .workspace {
             width: 100%;
-            max-width: 700px;
-            border: 1px solid #222;
-            padding: 25px;
-            background: #0a0a0a;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            max-width: 780px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px var(--accent-glow);
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+        }
+
+        .top-bar {
+            background: #09090d;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .status-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #222230;
+        }
+
+        .dot.active {
+            background: var(--accent-red);
+            box-shadow: 0 0 8px var(--accent-red);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .note-title {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .note-title::before {
+            content: "//";
+            color: var(--accent-red);
+        }
+
+        p.note-body {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            border-left: 2px solid var(--border-color);
+            padding-left: 15px;
+        }
+
+        .search-wrapper {
+            margin-top: 30px;
             position: relative;
         }
 
-        .header {
-            border-bottom: 1px solid var(--dim-color);
-            padding-bottom: 12px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .header span {
-            color: var(--accent-color);
-        }
-
-        .entry {
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .glitch-text {
-            color: var(--accent-color);
-            background: #1a0000;
-            padding: 2px 5px;
-        }
-
-        .input-box {
-            margin-top: 30px;
-            border-top: 1px dashed var(--dim-color);
-            padding-top: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .prompt {
-            color: var(--accent-color);
-            margin-right: 10px;
-            font-weight: bold;
-        }
-
-        input[type="text"] {
-            background: transparent;
-            border: none;
+        .search-input {
+            width: 100%;
+            background: #050507;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 14px 16px;
             color: #fff;
             font-family: inherit;
-            font-size: 1rem;
-            width: 100%;
+            font-size: 0.9rem;
             outline: none;
+            transition: all 0.3s ease;
         }
 
-        .output-area {
+        .search-input:focus {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .result-box {
             display: none;
             margin-top: 20px;
-            padding: 15px;
-            border: 1px solid var(--accent-color);
-            background: #110000;
-            color: #ffcccc;
-            font-size: 0.9rem;
-            line-height: 1.5;
+            padding: 20px;
+            background: #050507;
+            border: 1px solid var(--accent-red);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease;
         }
 
-        .chat-log {
-            background: #000;
-            padding: 10px;
-            border-left: 2px solid var(--accent-color);
-            margin-top: 10px;
-            font-size: 0.85rem;
+        .chat-block {
+            background: #0a0a0f;
+            border: 1px solid #1c1c28;
+            padding: 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 0.8rem;
+        }
+
+        .msg {
+            margin-bottom: 6px;
+        }
+        .msg:last-child { margin-bottom: 0; }
+        .msg .author { color: var(--accent-red); font-weight: 600; }
+        .msg .author.m { color: #5a88ff; }
+
+        .red-alert {
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        USER: <span>highpal</span> | NOTES_LOG | DO_NOT_OPEN
+<div class="workspace">
+    <div class="top-bar">
+        <div class="status-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div>HIGHPAL_MEMO_V2.1</div>
     </div>
 
-    <div class="entry">
-        Зачем я это пишу? Наверное, чтобы не забыть пароли. В голове всё путается. 
-        В квартире опять этот странный запах из дальней комнаты, но я просто плотно закрыла дверь и включила вентилятор. Всё нормально.
-    </div>
+    <div class="content">
+        <div class="note-title">записи_для_себя.txt</div>
+        
+        <p class="note-body"> 
+          все окна открыты на распашку, но все так же воняет, это ужасно
+        </p>
 
-    <div class="entry">
-        Мы просто играем в Майнкрафт. Как раньше. Ничего не произошло. 
-        Завтра надо записать новую серию, нужно только сделать звук погромче, чтобы не слышать, как что-то шуршит в коридоре.
-    </div>
+        <p class="note-body">
+            не могу перестать играть в майн. мне там спокойней.
+        </p>
 
-    <div id="output" class="output-area"></div>
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" class="search-input" placeholder="поиск по архивным тегам (ключевые слова / даты)..." autofocus>
+        </div>
 
-    <div class="input-box">
-        <span class="prompt">search_></span>
-        <input type="text" id="userInput" placeholder="введи слово или дату..." autofocus>
+        <div id="resultBox" class="result-box"></div>
     </div>
 </div>
 
 <script>
-    const input = document.getElementById('userInput');
-    const output = document.getElementById('output');
+    const input = document.getElementById('searchInput');
+    const result = document.getElementById('resultBox');
 
     input.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
-            const val = input.value.trim().toLowerCase();
+            const query = input.value.trim().toLowerCase();
             input.value = '';
 
-            if (val === '2606' || val === '26.06' || val === '26062026') {
-                output.style.display = 'block';
-                output.innerHTML = `
-                    <strong>[ЗАПИСЬ ОТ 26.06.2026]</strong><br><br>
-                    Нам было весело. Я просто хотела, чтобы он расслабился. Я дала ему попробовать, а он начал паниковать. Это была просто дрянь для тусовки, почему ему стало так плохо?!<br><br>
-                    <em>Слитый фрагмент переписки Квасса и Майкла (26.06 02:41):</em>
-                    <div class="chat-log">
-                        <strong>Квасс:</strong> Майкл блядь мне пиздец плохо highpal чтото подсыпала или дала я не могу дышать<br>
-                        <strong>Квасс:</strong> она смеется говорит что я придумываю я боюсь ей сказать что мне хреново<br>
-                        <strong>Майкл:</strong> Ты где?! Вызывай скорую сука!<br>
-                        <strong>Квасс:</strong> я не чувствую рук
-                    </div><br>
-                    <span class="glitch-text">Я не вызвала скорую. Я испугалась. Теперь он лежит в той комнате и больше не жалуется.</span>
+            if (query === '2606' || query === '26.06' || query === '26062026') {
+                result.style.display = 'block';
+                result.innerHTML = `
+                    <span class="red-alert">[26.06.2026 — НОЧЬ]</span><br><br>
+                     Я думала, она притворяется.<br><br>
+                    <em> майкл скинул мне эти сообщения. что он хотел этим сказать? ненавижу его. (02:41):</em>
+                    <div class="chat-block">
+                        <div class="msg"><span class="author">Квасс:</span> Майкл, мне пиздец плохо. хайпал сует мне какую-то хрень, говорит, что это весело </div>
+                        <div class="msg"><span class="author">Квасс:</span> она смеется и говорит что я придумываю..</div>
+                        <div class="msg"><span class="author">Квасс:</span> я не могу встать</div>
+                    </div>
+                    <span class="red-alert">почему она пишет это ЕМУ? .</span>
                 `;
-            } else if (val === 'kvass' || val === 'квасс') {
-                output.style.display = 'block';
-                output.innerHTML = `
-                    <strong>[KVASS_BOT_LOGS]</strong><br><br>
-                    Я перенесла его скин в Майнкрафт. Если он будет в игре, значит, его нет в той квартире. Он просто стоит на спавне и смотрит на меня.<br><br>
-                    Почему он не отвечает в чате? Я же знаю, что он там. Я слышу, как его персонаж передвигается, когда я поворачиваюсь спиной.<br>
-                    <span class="glitch-text">Он не разлагается в игре. В игре он живой.</span>
+            } else if (query === 'kvass' || query === 'квасс') {
+                result.style.display = 'block';
+                result.innerHTML = `
+                    <span class="red-alert">[НЯШ]</span><br><br>
+                    наконец нашла мод в который мы с ней сможем сыграть. .<br><br>
+                    мне так жаль. <br>
+                    <em>Она все еще в той комнате.</em>
                 `;
-            } else if (val === 'michael' || val === 'майкл') {
-                output.style.display = 'block';
-                output.innerHTML = `
-                    <strong>[DISCORD_HISTORY // Michael_2026]</strong><br><br>
-                    <em>Архив чата перед 3-й серией:</em>
-                    <div class="chat-log">
-                        <strong>Майкл:</strong> highpal, где Квасс? Его мама звонит мне уже третий день, он не дома.<br>
-                        <strong>highpal:</strong> Да забей ты! Он занят. Заходи лучше на сервер, я крутой хоррор-мод сгенерила, запишем 3 серию!<br>
-                        <strong>Майкл:</strong> Ты какая-то странная. Что произошло на той неделе?
-                    </div><br>
-                    <em>Статус после 3-й серии:</em> <span style="color:red;">ПОЛЬЗОВАТЕЛЬ ЗАБЛОКИРОВАН.</span><br>
-                    Он слишком много спрашивал. Он хотел разрушить всё.
+            } else if (query === 'michael' || query === 'майкл') {
+                result.style.display = 'block';
+                result.innerHTML = `
+                    <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
+                    Он кричал, требовал ответов и угрожал вызвать полицию.<br><br>
+                    он меня сильно обидел, почему он так общался со мной? <br>
+                    <span class="red-alert">Теперь у меня нет друзей. </span>
                 `;
-            } else if (val === 'highpal') {
-                output.style.display = 'block';
-                output.innerHTML = `
-                    <strong>[СЕБЕ]</strong><br><br>
-                    Ты не виновата. Это был несчастный случай. Никто не найдет его, если ты сама не откроешь ту дверь.<br>
-                    Просто играй. Включай микрофон, улыбайся на запись и делай вид, что всё хорошо. У тебя есть еще 3 дня.
+            } else if (query === 'highpal') {
+                result.style.display = 'block';
+                result.innerHTML = `
+                    <span class="red-alert">[ НАПОМИНАНИЕ]</span><br><br>
+                    следщ мод играем вместе в ...??? еще думаю. <br>
+                    ну окей. в процессе разберусь
                 `;
             } else {
-                output.style.display = 'block';
-                output.innerHTML = `<span style="color: #666;">ничего не найдено по запросу "${val}"...</span>`;
+                result.style.display = 'block';
+                result.innerHTML = `<span style="color: var(--text-muted);">Запись по запросу "${query}" не найдена или была уничтожена.</span>`;
             }
         }
     });
