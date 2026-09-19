@@ -38,7 +38,7 @@
             margin-bottom: 15px;
         }
 
-        /* Скрытое окно ввода: визуально прозрачная полоска внизу */
+        /* Скрытое окно ввода */
         .secret-input-wrapper {
             margin-top: 40px;
             padding-top: 10px;
@@ -54,7 +54,7 @@
             font-size: 0.85rem;
             outline: none;
             padding: 4px 0;
-            opacity: 0.1; /* Почти невидимая строка */
+            opacity: 0.1;
             transition: opacity 0.2s;
         }
 
@@ -92,6 +92,14 @@
             color: #ff0000;
             font-weight: bold;
         }
+
+        .arg-img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #000000;
+            margin-top: 12px;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -119,7 +127,10 @@
     const input = document.getElementById('searchInput');
     const result = document.getElementById('resultBox');
 
-    // Авто-фокус: если игрок начинает просто печатать на клавиатуре, текст сразу идет в скрытую строку
+    // Счетчик повторных вводов для каждого кода
+    const entryCounts = {};
+
+    // Авто-фокус при печати
     document.addEventListener('keydown', function(e) {
         if (document.activeElement !== input && e.key.length === 1) {
             input.focus();
@@ -131,44 +142,91 @@
             const query = input.value.trim().toLowerCase();
             input.value = '';
 
-            if (query === '2606' || query === '26.06' || query === '26062026') {
-                result.style.display = 'block';
-                result.innerHTML = `
-                    <span class="red-alert">[26.06.2026 — НОЧЬ]</span><br><br>
-                    Я думала, она притворяется.<br><br>
-                    <em> майкл скинул мне эти сообщения. что он хотел этим сказать? ненавижу его. (02:41):</em>
-                    <div class="chat-block">
-                        <div class="msg"><span class="author">Квасс:</span> Майкл, мне пиздец плохо. хайпал сует мне какую-то хрень, говорит, что это весело </div>
-                        <div class="msg"><span class="author">Квасс:</span> она смеется и говорит что я придумываю..</div>
-                        <div class="msg"><span class="author">Квасс:</span> я не могу встать</div>
-                    </div>
-                    <span class="red-alert">почему она пишет это ЕМУ? .</span>
-                `;
+            // Увеличиваем счетчик шага для введенного слова
+            entryCounts[query] = (entryCounts[query] || 0) + 1;
+            const step = entryCounts[query];
+
+            result.style.display = 'block';
+
+            if (query === 'michael' || query === 'майкл') {
+                if (step === 1) {
+                    result.innerHTML = `
+                        <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
+                        Он кричал, требовал ответов и угрожал вызвать полицию.<br><br>
+                        он меня сильно обидел, почему он так общался со мной? <br>
+                        <span class="red-alert">Теперь у меня нет друзей.</span>
+                    `;
+                } else if (step === 6) {
+                    result.innerHTML = `
+                        <span class="red-alert">[ ПРИДУРОК]</span><br><br>
+                        мы же раньше нормально общались. <br>
+                        <img src="friends.jpg" class="arg-img" alt="старое фото">
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <span class="red-alert">[ ПРИДУРОК  ]</span><br><br>
+                        ОН ЖУТКО ПАХНЕТ НЕНАВИЖУ ТО ЧТО ОН СУЕТ СВОЙ ДРАННЫЙ НОС КУДА НЕ НАДО ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ ОСЕЛ<br>
+                        <img src="crime.jpg" class="arg-img" alt="коридор">
+                    `;
+                }
             } else if (query === 'kvass' || query === 'квасс') {
-                result.style.display = 'block';
-                result.innerHTML = `
-                    <span class="red-alert">[НЯШ]</span><br><br>
-                    наконец нашла мод в который мы с ней сможем сыграть. .<br><br>
-                    мне так жаль. <br>
-                    <em>Она все еще в той комнате.</em>
-                `;
-            } else if (query === 'michael' || query === 'майкл') {
-                result.style.display = 'block';
-                result.innerHTML = `
-                    <span class="red-alert">[ ПРИДУРОК ]</span><br><br>
-                    Он кричал, требовал ответов и угрожал вызвать полицию.<br><br>
-                    он меня сильно обидел, почему он так общался со мной? <br>
-                    <span class="red-alert">Теперь у меня нет друзей. </span>
-                `;
+                if (step === 1) {
+                    result.innerHTML = `
+                        <span class="red-alert">[НЯШ]</span><br><br>
+                        наконец нашла мод в который мы с ней сможем сыграть. .<br><br>
+                        мне так жаль. <br>
+                        <em>Она все еще в той комнате.</em>
+                    `;
+               } else if (step === 6) {
+                    result.innerHTML = `
+                        <span class="red-alert">[...]</span><br><br>
+                        она всегда помогала в трудных ситуациях.<br>
+                        <img src="gift.jpg" class="arg-img" alt="подарок">
+                    `;
+                } 
+            `;
+                } else {
+                    result.innerHTML = `
+                        <span class="red-alert">[...]</span><br><br>
+                        "перестань ворошить прошлое.живи настоящим. это же не конец" <br>
+                        <img src="gift.jpg" class="arg-img" alt="подарок">
+                    `;
+                }
+                
+            } else if (query === '2606' || query === '26.06' || query === '26062026') {
+                if (step === 1) {
+                    result.innerHTML = `
+                        <span class="red-alert">[26.06.2026 — НОЧЬ]</span><br><br>
+                        Я думала, она притворяется.<br><br>
+                        <em> майкл скинул мне эти сообщения. что он хотел этим сказать? ненавижу его. (02:41):</em>
+                        <div class="chat-block">
+                            <div class="msg"><span class="author">Квасс:</span> Майкл, мне пиздец плохо. хайпал сует мне какую-то хрень, говорит, что это весело </div>
+                            <div class="msg"><span class="author">Квасс:</span> она смеется и говорит что я придумываю..</div>
+                            <div class="msg"><span class="author">Квасс:</span> я не могу встать</div>
+                        </div>
+                        <span class="red-alert">почему она пишет это ЕМУ? .</span>
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <span class="red-alert">[26.06.2026 ]</span><br><br>
+                        0-0 <br>
+                    
+                    `;
+                }
             } else if (query === 'highpal') {
-                result.style.display = 'block';
                 result.innerHTML = `
                     <span class="red-alert">[ НАПОМИНАНИЕ]</span><br><br>
                     следщ мод играем вместе в ...??? еще думаю. <br>
                     ну окей. в процессе разберусь
                 `;
+            } else if (query === 'подарок' || query === 'gift' || query === 'свинка') {
+                result.innerHTML = `
+                    <span class="red-alert">[ ЕЕ ПОДАРОК ]</span><br><br>
+                    годный подарок на др! <br>
+                    спс <br>
+                    <img src="gift.jpg" class="arg-img" alt="подарок">
+                `;
             } else {
-                result.style.display = 'block';
                 result.innerHTML = `<span style="color: #666666;">Запись по запросу "${query}" не найдена или была уничтожена.</span>`;
             }
         }
